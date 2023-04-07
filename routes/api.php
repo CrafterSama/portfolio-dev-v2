@@ -24,7 +24,7 @@ Route::get('/test', function () {
     return 'Hello World';
 });
 
-Route::get('/userinfo', [ApiController::class, 'userInfo']);
+Route::get('/user/{id}', [ApiController::class, 'userInfo']);
 
 Route::get('/convert-image', function () {
 });

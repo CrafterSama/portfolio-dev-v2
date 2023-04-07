@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Helper;
 use Illuminate\Http\Response;
+use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
@@ -13,16 +14,14 @@ class ApiController extends Controller
      *
      * @return \Illuminate\Http\JSonResponse
      */
-    public function userInfo()
+    public function userInfo($id)
     {
-        $id = 1;
-
-        $user = User::find($id)->with('professional_skills', 'technical_skills', 'services', 'featuredProjects', 'education', 'experiences', 'portfolios', 'posts', 'reviews', 'social_medias')->get();
+        $user = User::with('professional_skills', 'technical_skills', 'services', 'featuredProjects', 'education', 'experiences', 'portfolios', 'posts', 'reviews', 'social_medias')->find($id);
 
         if ($user->count() >= 1) {
             return response()->json([
                     'status' => 'ok',
-                    'user' => $user->first(),
+                    'user' => $user,
                     'message' => Helper::successMessage('User info retrieved successfully')
                 ], Response::HTTP_OK);
         } else {
