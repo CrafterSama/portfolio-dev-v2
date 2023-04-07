@@ -10,7 +10,6 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\WorkExperienceController;
 use Illuminate\Support\Facades\Route;
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -57,3 +56,5 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
         }
     );
 });
+
+require __DIR__.'/auth.php';

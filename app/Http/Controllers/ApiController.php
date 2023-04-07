@@ -17,10 +17,14 @@ class ApiController extends Controller
     {
         $user = User::with('professional_skills', 'technical_skills', 'services', 'featuredProjects', 'education', 'experiences', 'portfolios', 'posts', 'reviews', 'social_medias')->find($id);
 
+        $status = $user ? 'ok' : 'error';
+        $message = $user ? Helper::successMessage('User info retrieved successfully') : Helper::errorMessage('User not found');
+        $httpCode = $user ? Response::HTTP_OK : Response::HTTP_NOT_FOUND;
+
         return response()->json([
-                'status' => $user ? 'ok' : 'error',
+                'status' => $status,
                 'user' => $user,
-                'message' => $user ? Helper::successMessage('User info retrieved successfully') : Helper::errorMessage('User not found')
-            ], $user ? Response::HTTP_OK : Response::HTTP_NOT_FOUND);
+                'message' => $message
+            ], $httpCode);
     }
 }
