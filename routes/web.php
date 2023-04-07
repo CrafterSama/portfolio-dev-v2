@@ -1,5 +1,13 @@
 <?php
 
+use App\Http\Controllers\CKEditorController;
+use App\Http\Controllers\EducationController;
+use App\Http\Controllers\ProfessionalSkillController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\TechnicalSkillController;
+use App\Http\Controllers\ClientReviewController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\WorkExperienceController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -19,9 +27,33 @@ Route::get('/', function () {
 });
 
 Route::get('portfolio', function () {
-    return view('home-portfolio');
+    return view('portfolio.home-portfolio');
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+
+
+Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+    Route::get('/featured-projects', function () {
+        return view('dashboard.featured-projects');
+    })->name('featured-projects');
+    Route::get('/portfolio-items', function () {
+        return view('dashboard.portfolio-items');
+    })->name('portfolio-items');
+
+    Route::resource('education', EducationController::class);
+    Route::resource('service', ServiceController::class);
+    Route::resource('professional-skill', ProfessionalSkillController::class);
+    Route::resource('technical-skill', TechnicalSkillController::class);
+    Route::resource('client-review', ClientReviewController::class);
+    Route::resource('post-items', PostController::class);
+    Route::resource('work-experiences', WorkExperienceController::class);
+
+    Route::controller(CKEditorController::class)->group(
+        function () {
+            Route::post('ckeditor/upload', 'upload')->name('ckeditor.image-upload');
+        }
+    );
+});

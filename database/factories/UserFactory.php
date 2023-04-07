@@ -25,8 +25,9 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->name(),
-            'email' => $this->faker->unique()->safeEmail(),
+            'first_name' => $this->faker->firstName(),
+            'last_name' => $this->faker->lastName(),
+            'email' => 'mundofuturoca@gmail.com', //$this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
 
             'phone' => $this->faker->phoneNumber(),
@@ -70,7 +71,7 @@ class UserFactory extends Factory
         return $this->has(
             Team::factory()
                 ->state(function (array $attributes, User $user) {
-                    return ['name' => $user->name . '\'s Team', 'user_id' => $user->id, 'personal_team' => true];
+                    return ['name' => $user->name() . '\'s Team', 'user_id' => $user->id, 'personal_team' => true];
                 }),
             'ownedTeams'
         );
