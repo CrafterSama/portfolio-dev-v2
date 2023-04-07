@@ -17,12 +17,20 @@ class ApiController extends Controller
     {
         $id = 1;
 
-        $user = User::find($id)->with('professional_skills', 'technical_skills', 'services', 'featuredProjects', 'education', 'experiences', 'portfolios', 'posts', 'reviews', 'social_medias')->get()->first();
+        $user = User::find($id)->with('professional_skills', 'technical_skills', 'services', 'featuredProjects', 'education', 'experiences', 'portfolios', 'posts', 'reviews', 'social_medias')->get();
 
-        return response()->json([
-                'status' => 'ok',
-                'user' => $user,
-                'message' => Helper::successMessage('User info retrieved successfully')
-            ], Response::HTTP_OK);
+        if ($user->count() >= 1) {
+            return response()->json([
+                    'status' => 'ok',
+                    'user' => $user->first(),
+                    'message' => Helper::successMessage('User info retrieved successfully')
+                ], Response::HTTP_OK);
+        } else {
+            return response()->json([
+                    'status' => 'error',
+                    'user' => null,
+                    'message' => Helper::errorMessage('User not found')
+                ], Response::HTTP_NOT_FOUND);
+        }
     }
 }
